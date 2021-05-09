@@ -9,14 +9,14 @@ import { HomeScreen } from "../screens/HomeScreen";
 import { SettingsAppScreen } from "../screens/SettingsAppScreen";
 import { THEME } from "../theme";
 import { MapScreen } from "../screens/MapScreen";
-import { DateScreen } from "../screens/DateScreen";
+import { DatePickerScreen } from "../screens/DatePickerScreen";
 import { SearchScreen } from "../screens/SearchScreen";
 import { PlacesScreen } from "../screens/PlacesScreen";
 
 const SearchNavigator = createStackNavigator({
   Main: HomeScreen,
   Map: MapScreen,
-  Date: DateScreen,
+  Date: DatePickerScreen,
   Search: SearchScreen,
   Places: PlacesScreen
 });
