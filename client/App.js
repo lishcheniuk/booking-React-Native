@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
-import { MainScreen } from "./src/screens/MainScreen";
+import { AppNavigation } from "./src/navigation/AppNavigation";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -17,8 +17,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <MainScreen />
+      <AppNavigation />
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgb(249, 249, 249)",
-    paddingHorizontal: 10,
     paddingTop: 30
   }
 });

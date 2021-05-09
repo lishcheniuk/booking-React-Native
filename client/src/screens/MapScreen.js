@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import MapView from "react-native-maps";
 import { CustomMarker } from "../components/CustomMarker";
+import { THEME } from "../theme";
 
 export const MapScreen = () => {
   const [color, setColor] = useState(true);
@@ -32,3 +33,10 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height
   }
 });
+
+MapScreen.navigationOptions = () => {
+  return {
+    headerTitle: "Отели поблизости",
+    headerTintColor: THEME.GREY_COLOR
+  };
+};
