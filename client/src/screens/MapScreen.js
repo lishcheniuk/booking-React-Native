@@ -33,10 +33,3 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height
   }
 });
-
-MapScreen.navigationOptions = () => {
-  return {
-    headerTitle: "Отели поблизости",
-    headerTintColor: THEME.GREY_COLOR
-  };
-};

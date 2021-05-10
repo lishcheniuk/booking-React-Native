@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AppText } from "./ui/AppText";
 import { THEME } from "../theme";
 
-export const AddAdultNumber = () => {
-  const [count, setCount] = useState(2);
-
+export const AdultNumber = ({ places: count, set }) => {
   const colorMinus = count <= 1 ? THEME.GREY_COLOR : THEME.PRIMARY_COLOR;
   const colorPlus = count >= 4 ? THEME.GREY_COLOR : THEME.PRIMARY_COLOR;
 
   function clickHandler(mark) {
     const c = count + mark;
     if (c < 1 || c > 4) return false;
-    setCount(c);
+    set(mark, "adult");
   }
 
   return (

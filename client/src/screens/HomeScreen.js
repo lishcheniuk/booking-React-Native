@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 import { SearchView } from "../components/SearchView";
 import { RecentView } from "../components/RecentView";
@@ -47,8 +47,4 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   }
-});
-
-HomeScreen.navigationOptions = () => ({
-  headerShown: false //скрыть заголовок
 });

@@ -1,18 +1,18 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { AddAdultNumber } from "./AddAdultNumber";
-import { AddChildNumber } from "./AddChildNumber";
+import { AdultNumber } from "./AdultNumber";
+import { ChildNumber } from "./ChildNumber";
 import { AppTitle } from "./ui/AppTitle";
 
-export const AddNumber = ({ idx }) => {
+export const AddNumber = ({ room, set, numberRoom }) => {
   return (
     <View style={styles.container}>
       <AppTitle style={{ textTransform: "uppercase", letterSpacing: 1.5 }}>
-        Номер {idx}
+        Номер {numberRoom}
       </AppTitle>
 
-      <AddAdultNumber />
-      <AddChildNumber />
+      <AdultNumber places={room.adult} set={set} />
+      <ChildNumber places={room.child} set={set} />
     </View>
   );
 };

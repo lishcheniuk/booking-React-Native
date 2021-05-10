@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
 import { AppTitle } from "./AppTitle";
 import { THEME } from "../../theme";
 
-export const DatePickerNavigation = ({ title, back, style }) => {
+export const DatePickerNavigation = ({ title, back }) => {
   const daysName = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
   return (

@@ -15,8 +15,3 @@ export const SearchScreen = () => {
     </View>
   );
 };
-
-SearchScreen.navigationOptions = () => ({
-  headerTitle: "Направление",
-  headerTintColor: THEME.GREY_COLOR
-});

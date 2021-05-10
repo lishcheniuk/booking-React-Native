@@ -1,24 +1,16 @@
-import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AppText } from "./ui/AppText";
+import React from "react";
+import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { THEME } from "../theme";
+import { AppText } from "./ui/AppText";
 
-export const AddChildNumber = () => {
-  const [count, setCount] = useState(0);
-
-  const colorMinus = count <= 0 ? THEME.GREY_COLOR : THEME.PRIMARY_COLOR;
+export const CountRooms = ({ count, set }) => {
+  const colorMinus = count <= 1 ? THEME.GREY_COLOR : THEME.PRIMARY_COLOR;
   const colorPlus = count >= 4 ? THEME.GREY_COLOR : THEME.PRIMARY_COLOR;
-
-  function clickHandler(mark) {
-    const c = count + mark;
-    if (c < 0 || c > 4) return false;
-    setCount(c);
-  }
 
   return (
     <View style={styles.countNumber}>
-      <AppText style={{ fontSize: 17 }}>Детей</AppText>
+      <AppText style={{ fontSize: 17 }}>Номеров</AppText>
       <View style={styles.countControlWrap}>
         <TouchableOpacity
           style={[
@@ -28,7 +20,7 @@ export const AddChildNumber = () => {
             }
           ]}
           activeOpacity={1}
-          onPress={clickHandler.bind(null, -1)}
+          onPress={set.bind(null, -1)}
         >
           <AntDesign name="minus" size={19} color={colorMinus} />
         </TouchableOpacity>
@@ -41,7 +33,7 @@ export const AddChildNumber = () => {
             }
           ]}
           activeOpacity={1}
-          onPress={clickHandler.bind(null, 1)}
+          onPress={set.bind(null, 1)}
         >
           <AntDesign name="plus" size={19} color={colorPlus} />
         </TouchableOpacity>
@@ -52,12 +44,16 @@ export const AddChildNumber = () => {
 
 const styles = StyleSheet.create({
   countNumber: {
+    borderRadius: 10,
+    elevation: 5,
+    margin: 15,
+    padding: 15,
+    backgroundColor: "#fff",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"
   },
   countControlWrap: { flexDirection: "row", alignItems: "center" },
-  countControl: {},
   btn: {
     paddingHorizontal: 10,
     paddingVertical: 5,

@@ -1,10 +1,21 @@
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { THEME } from "../theme";
 import { AppButton } from "./ui/AppButton";
 import { SearchTextInput } from "./ui/SearchTextInput";
+import searchState from "../store/searchState";
+import { useMoment } from "../hooks/useMoment";
 
-export const SearchView = ({ toScreen }) => {
+export const SearchView = observer(({ toScreen }) => {
+  const { currentDate } = useMoment();
+  const countPlaces = searchState.allPlaces;
+  const countRooms = searchState.countRooms;
+
+  const { from, to } = searchState.getDates;
+  const dateFrom = from ? from : currentDate;
+  const dateTo = to ? to : dateFrom.clone().add(1, "day");
+
   return (
     <View style={styles.search}>
       <Text style={styles.label}>Направление</Text>
@@ -17,21 +28,25 @@ export const SearchView = ({ toScreen }) => {
           style={styles.filterItem}
         >
           <Text style={styles.label}>Даты</Text>
-          <Text style={styles.filterValue}>25 мая - 28 мая</Text>
+          <Text style={styles.filterValue}>
+            {dateFrom.format("DD MMM")} - {dateTo.format("DD MMM")}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.filterItem, styles.places]}
-          onPress={() => toScreen("Places")}
+          onPress={() => toScreen("Rooms")}
         >
           <Text style={styles.label}>Количество номеров</Text>
-          <Text style={styles.filterValue}>Гостей: 2, номеров: 1</Text>
+          <Text style={styles.filterValue}>
+            Гостей: {countPlaces}, номеров: {countRooms}
+          </Text>
         </TouchableOpacity>
       </View>
       <AppButton title="Поиск" click={() => {}} />
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   search: {
