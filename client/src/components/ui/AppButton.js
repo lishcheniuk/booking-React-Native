@@ -3,10 +3,11 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { THEME } from "../../theme";
 
 export const AppButton = ({
-  title,
+  children,
   style = {},
   colorText = "#fff",
-  activeOpacity = 0.9,
+  activeOpacity = 0.8,
+  align = "center",
   click
 }) => {
   return (
@@ -15,7 +16,9 @@ export const AppButton = ({
       onPress={click}
       style={[styles.button, style]}
     >
-      <Text style={[styles.title, { color: colorText }]}>{title}</Text>
+      <Text style={[styles.title, { color: colorText, textAlign: align }]}>
+        {children}
+      </Text>
     </TouchableOpacity>
   );
 };

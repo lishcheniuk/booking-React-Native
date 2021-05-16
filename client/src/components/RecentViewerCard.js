@@ -1,60 +1,68 @@
+import { AntDesign } from "@expo/vector-icons";
 import React from "react";
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View
+} from "react-native";
 import { THEME } from "../theme";
-import { AppText } from "./ui/AppText";
-import { AppTitle } from "./ui/AppTitle";
+import { AppHotelRate } from "./ui/AppHotelRate";
 
 export const RecentViewerCard = () => {
   return (
-    <ImageBackground
-      source={require("../../assets/barcelona.jpg")}
-      style={styles.card}
+    <TouchableOpacity
+      activeOpacity={0.9}
+      style={styles.hotel}
+      onPress={() => {}}
     >
-      <View style={styles.backdrop}>
-        <AppTitle style={styles.title}>Aloft Kiev</AppTitle>
-        <View style={{ flexDirection: "row" }}>
-          <AppText style={styles.rate}>9.1</AppText>
-          <AppText style={styles.text}> Киев</AppText>
+      <ImageBackground
+        source={require("../../assets/barcelona.jpg")}
+        resizeMode="cover"
+        style={styles.hotelBg}
+      >
+        <View style={styles.hotelRate}>
+          <AppHotelRate hotel="Aloft Kiev" rate="9.1" country="KIEV" />
         </View>
-      </View>
-    </ImageBackground>
+
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.close}
+          onPress={() => {}}
+        >
+          <AntDesign name="close" size={16} color="#fff" />
+        </TouchableOpacity>
+      </ImageBackground>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
+  hotel: {
     width: 250,
     height: 120,
     marginLeft: 10,
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: THEME.GREY_COLOR_LIGHT,
-    overflow: "hidden",
-    resizeMode: "cover",
-    justifyContent: "flex-end"
+    overflow: "hidden"
   },
-  backdrop: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  hotelBg: {
     width: "100%",
+    height: "100%",
+    justifyContent: "flex-end",
+    position: "relative"
+  },
+  hotelRate: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: 5
   },
-  title: {
-    color: "#fff",
-    fontSize: 16
-  },
-  rate: {
-    borderRadius: 10,
-    backgroundColor: "#10ba35",
-    color: "#fff",
-    paddingHorizontal: 5,
-    overflow: "hidden",
-    fontSize: 12,
-    fontWeight: "500"
-  },
-  text: {
-    color: "#fff",
-    textTransform: "uppercase",
-    fontSize: 12,
-    fontWeight: "500"
+  close: {
+    borderRadius: 15,
+    backgroundColor: THEME.GREY_COLOR,
+    position: "absolute",
+    top: 3,
+    right: 3,
+    padding: 2
   }
 });

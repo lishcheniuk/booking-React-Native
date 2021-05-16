@@ -11,7 +11,8 @@ export const useLocation = () => {
       setErrorMsg("Permission to access location was denied");
       return;
     }
-    //let location = await Location.getCurrentPositionAsync();
+    //let locationData = await Location.getCurrentPositionAsync();
+
     setLocation({
       latitude: 50.442685313547294,
       longitude: 30.627086490240988

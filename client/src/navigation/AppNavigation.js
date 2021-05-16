@@ -12,7 +12,8 @@ import { DatePickerScreen } from "../screens/DatePickerScreen";
 import { SearchScreen } from "../screens/SearchScreen";
 import { SelectRoomsScreen } from "../screens/SelectRoomsScreen";
 import { THEME } from "../theme";
-import { DatePickerNavigation } from "../components/ui/DatePickerNavigation";
+import { DatePickerHeader } from "./DatePickerHeader";
+import { MapHeader } from "./MapHeader";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,7 +30,9 @@ function HomeTabs() {
           borderTopColor: THEME.GREY_COLOR_LIGHT
         },
         labelStyle: {
-          fontFamily: "roboto-bold"
+          fontFamily: "roboto-regular",
+          fontSize: 12,
+          fontWeight: "600"
         }
       }}
     >
@@ -38,8 +41,8 @@ function HomeTabs() {
         component={HomeScreen}
         options={{
           tabBarLabel: "Поиск",
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="search1" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <AntDesign name="search1" size={focused ? 26 : 24} color={color} />
           )
         }}
       />
@@ -47,9 +50,13 @@ function HomeTabs() {
         name="Weekend"
         component={WeekendScreen}
         options={{
-          tabBarLabel: "Карта",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="location-sharp" size={24} color={color} />
+          tabBarLabel: "Weekend",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name="location-sharp"
+              size={focused ? 26 : 24}
+              color={color}
+            />
           )
         }}
       />
@@ -58,8 +65,8 @@ function HomeTabs() {
         component={FavoritesScreen}
         options={{
           tabBarLabel: "Избранное",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="heart" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="heart" size={focused ? 26 : 24} color={color} />
           )
         }}
       />
@@ -68,8 +75,12 @@ function HomeTabs() {
         component={SettingsAppScreen}
         options={{
           tabBarLabel: "Настройки",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="settings-sharp" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name="settings-sharp"
+              size={focused ? 26 : 24}
+              color={color}
+            />
           )
         }}
       />
@@ -89,7 +100,9 @@ export function AppNavigation() {
         <Stack.Screen
           name="Map"
           component={MapScreen}
-          options={{ headerTitle: "Отели поблизости" }}
+          options={({ route }) => ({
+            headerTitle: () => <MapHeader {...route.params} />
+          })}
         />
         <Stack.Screen
           name="Date"
@@ -100,7 +113,7 @@ export function AppNavigation() {
               const { options } = scene.descriptor;
               const title = options.headerTitle;
               return (
-                <DatePickerNavigation
+                <DatePickerHeader
                   title={title}
                   back={() => navigation.goBack()}
                   style={options.headerStyle}

@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { THEME } from "../theme";
 import { AppButton } from "./ui/AppButton";
@@ -7,8 +8,9 @@ import { SearchTextInput } from "./ui/SearchTextInput";
 import searchState from "../store/searchState";
 import { useMoment } from "../hooks/useMoment";
 
-export const SearchView = observer(({ toScreen }) => {
+export const SearchView = observer(() => {
   const { currentDate } = useMoment();
+  const navigation = useNavigation();
   const countPlaces = searchState.allPlaces;
   const countRooms = searchState.countRooms;
 
@@ -16,8 +18,12 @@ export const SearchView = observer(({ toScreen }) => {
   const dateFrom = from ? from : currentDate;
   const dateTo = to ? to : dateFrom.clone().add(1, "day");
 
+  function toScreen(routeName) {
+    navigation.navigate(routeName);
+  }
+
   return (
-    <View style={styles.search}>
+    <View style={styles.searchContainer}>
       <Text style={styles.label}>Направление</Text>
       <SearchTextInput focus={() => toScreen("Search")} />
 
@@ -43,13 +49,13 @@ export const SearchView = observer(({ toScreen }) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <AppButton title="Поиск" click={() => {}} />
+      <AppButton click={() => {}}>Поиск</AppButton>
     </View>
   );
 });
 
 const styles = StyleSheet.create({
-  search: {
+  searchContainer: {
     backgroundColor: "#fff",
     padding: 15,
     marginHorizontal: 10,

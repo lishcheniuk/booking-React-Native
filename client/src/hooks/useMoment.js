@@ -28,7 +28,7 @@ export const useMoment = () => {
               const isSameMonth = !startMonth.isSame(value, "month");
 
               return {
-                value: isSameMonth ? false : value,
+                value: isSameMonth ? null : value,
                 disabled: currentDate > value.clone().add(1, "day")
               };
             })

@@ -1,10 +1,10 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
-import { AppTitle } from "./AppTitle";
-import { THEME } from "../../theme";
+import { AppTextBold } from "../components/ui/AppTextBold";
+import { THEME } from "../theme";
 
-export const DatePickerNavigation = ({ title, back }) => {
+export const DatePickerHeader = ({ title, back }) => {
   const daysName = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
   return (
@@ -22,16 +22,16 @@ export const DatePickerNavigation = ({ title, back }) => {
           <Ionicons name="arrow-back" size={25} color={THEME.GREY_COLOR} />
         </TouchableHighlight>
 
-        <AppTitle
+        <AppTextBold
           style={{
             marginLeft: 20,
             fontSize: 19,
             color: THEME.GREY_COLOR,
-            letterSpacing: 1
+            letterSpacing: 0.5
           }}
         >
           {title}
-        </AppTitle>
+        </AppTextBold>
       </View>
 
       <View style={styles.daysname}>

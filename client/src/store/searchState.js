@@ -3,9 +3,14 @@ import { makeAutoObservable } from "mobx";
 class SearchState {
   _rooms = { 1: { adult: 2, child: 0 } };
   _selectedDates = { from: null, to: null };
+  _renderListMonth = [];
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  get renderListMonth() {
+    return this._renderListMonth;
   }
 
   get countRooms() {
@@ -24,6 +29,10 @@ class SearchState {
 
   get roomPlaces() {
     return this._rooms;
+  }
+
+  setRenderListMonth(list) {
+    this._renderListMonth = list;
   }
 
   setRooms(rooms) {

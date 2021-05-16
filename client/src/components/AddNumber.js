@@ -2,14 +2,14 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { AdultNumber } from "./AdultNumber";
 import { ChildNumber } from "./ChildNumber";
-import { AppTitle } from "./ui/AppTitle";
+import { AppTextBold } from "./ui/AppTextBold";
 
 export const AddNumber = ({ room, set, numberRoom }) => {
   return (
     <View style={styles.container}>
-      <AppTitle style={{ textTransform: "uppercase", letterSpacing: 1.5 }}>
+      <AppTextBold style={{ textTransform: "uppercase", letterSpacing: 1.5 }}>
         Номер {numberRoom}
-      </AppTitle>
+      </AppTextBold>
 
       <AdultNumber places={room.adult} set={set} />
       <ChildNumber places={room.child} set={set} />

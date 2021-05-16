@@ -5,6 +5,7 @@ import { AddNumber } from "../components/AddNumber";
 import { AppButton } from "../components/ui/AppButton";
 import searchState from "../store/searchState";
 import { CountRooms } from "../components/CountRooms";
+import { setData } from "../libs/localStorage";
 
 export const SelectRoomsScreen = observer(({ navigation }) => {
   const [countRooms, setCountRooms] = useState(searchState.countRooms);
@@ -37,6 +38,7 @@ export const SelectRoomsScreen = observer(({ navigation }) => {
 
   function apply() {
     searchState.setRooms(rooms);
+    setData("rooms", rooms);
     navigation.goBack();
   }
 
@@ -59,7 +61,6 @@ export const SelectRoomsScreen = observer(({ navigation }) => {
         </View>
       </ScrollView>
       <AppButton
-        title="Применить"
         click={apply}
         style={{
           width: "80%",
@@ -67,7 +68,9 @@ export const SelectRoomsScreen = observer(({ navigation }) => {
           bottom: 20,
           left: "10%"
         }}
-      />
+      >
+        Применить
+      </AppButton>
     </View>
   );
 });

@@ -13,9 +13,9 @@ export const CalendarWeek = ({ week, dateFrom, dateTo, set }) => {
   }
 
   const dayStyles = ({ value, disabled }) => {
-    const day = value.toString();
-    const from = dateFrom && dateFrom.toString();
-    const to = dateTo && dateTo.toString();
+    const day = value + " ";
+    const from = dateFrom && dateFrom + " ";
+    const to = dateTo && dateTo + " ";
 
     const color =
       day === from || day === to || !value

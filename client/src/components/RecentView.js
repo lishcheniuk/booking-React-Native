@@ -1,13 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { THEME } from "../theme";
-import { AppTitle } from "./ui/AppTitle";
-import { ScrollHorizontal } from "./ui/ScrollHorizontal";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { AppTextBold } from "./ui/AppTextBold";
 
 export const RecentView = ({ children, title }) => {
   return (
     <View style={styles.container}>
-      <AppTitle
+      <AppTextBold
         style={{
           textTransform: "uppercase",
           letterSpacing: 1.5,
@@ -15,8 +13,14 @@ export const RecentView = ({ children, title }) => {
         }}
       >
         {title}
-      </AppTitle>
-      <ScrollHorizontal>{children}</ScrollHorizontal>
+      </AppTextBold>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={150}
+      >
+        {children}
+      </ScrollView>
     </View>
   );
 };

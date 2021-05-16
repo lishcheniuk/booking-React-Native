@@ -1,21 +1,31 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppText } from "./ui/AppText";
 import { THEME } from "../theme";
-import { AppTitle } from "./ui/AppTitle";
+import { AppTextBold } from "./ui/AppTextBold";
 import { AntDesign } from "@expo/vector-icons";
 
 export const RecentSearchCard = () => {
   return (
-    <View style={styles.card}>
-      <Image source={require("../../assets/rome.jpg")} style={styles.image} />
-      <AppTitle style={styles.title}>Рим</AppTitle>
-      <AppText style={styles.date}>25 мая - 29 мая</AppText>
-      {/* <Text style={styles.close}>&times;</Text> */}
-      <View style={styles.close}>
-        <AntDesign name="close" size={16} color="#fff" />
+    <TouchableOpacity activeOpacity={0.9} onPress={() => {}}>
+      <View style={styles.card}>
+        <Image source={require("../../assets/rome.jpg")} style={styles.image} />
+        <View
+          style={{ flex: 1, justifyContent: "center", paddingHorizontal: 15 }}
+        >
+          <AppTextBold style={styles.title}>Рим</AppTextBold>
+          <AppText style={styles.date}>25 мая - 29 мая</AppText>
+        </View>
+
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.close}
+          onPress={() => {}}
+        >
+          <AntDesign name="close" size={16} color="#fff" />
+        </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -40,7 +50,6 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   date: {
-    marginLeft: 15,
     fontSize: 12,
     color: THEME.GREY_COLOR
   },

@@ -1,16 +1,32 @@
 import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { AppText } from "./ui/AppText";
-import { AppTitle } from "./ui/AppTitle";
+import { AppTextBold } from "./ui/AppTextBold";
 import { AppButton } from "./ui/AppButton";
+import { useMoment } from "../hooks/useMoment";
 
-export const NearbyHotels = ({ toScreen }) => {
+export const NearbyHotels = () => {
+  const { currentDate } = useMoment();
+  const navigation = useNavigation();
+  const fromDate = currentDate.format("DD MMMM");
+  const toDate = currentDate.clone().add(2, "day").format("DD MMMM");
+
+  function toMapScreen() {
+    navigation.navigate("Map", {
+      from: fromDate,
+      to: toDate,
+      places: 2,
+      rooms: 1
+    });
+  }
+
   return (
     <View style={{ marginTop: 50 }}>
-      <AppTitle style={{ fontSize: 26, margin: 15 }}>
+      <AppTextBold style={{ fontSize: 26, margin: 15 }}>
         Ищете отель поблизости на сегодня?
-      </AppTitle>
+      </AppTextBold>
       <ImageBackground
         source={require("../../assets/image2.jpg")}
         style={styles.imageBg}
@@ -23,19 +39,17 @@ export const NearbyHotels = ({ toScreen }) => {
               color="#fff"
             />
             <View style={{ marginLeft: 25 }}>
-              <AppTitle style={{ margin: 0, color: "#fff", fontSize: 18 }}>
+              <AppTextBold style={{ margin: 0, color: "#fff", fontSize: 18 }}>
                 Текущее местоположение
-              </AppTitle>
+              </AppTextBold>
               <AppText style={{ color: "#fff", fontSize: 14 }}>
-                7 мая - 9 мая &nbsp;&nbsp;Гостей: 2, номеров: 1
+                {fromDate} - {toDate}
+                &nbsp;&nbsp;&nbsp;Гостей: 2, номеров: 1
               </AppText>
             </View>
           </View>
 
-          <AppButton
-            title="Поиск отелей поблизости"
-            click={() => toScreen("Map")}
-          />
+          <AppButton click={toMapScreen}>Поиск отелей поблизости</AppButton>
         </View>
       </ImageBackground>
     </View>

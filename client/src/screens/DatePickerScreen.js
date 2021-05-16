@@ -1,25 +1,25 @@
-import { set } from "mobx";
-import { observer, useLocalStore } from "mobx-react-lite";
-import React, { useEffect, useMemo, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import { CalendarMonth } from "../components/CalendarMonth";
 import { AppButton } from "../components/ui/AppButton";
 import { AppText } from "../components/ui/AppText";
-import { AppTitle } from "../components/ui/AppTitle";
+import { AppTextBold } from "../components/ui/AppTextBold";
+import { setData } from "../libs/localStorage";
 import { useMoment } from "../hooks/useMoment";
 import searchState from "../store/searchState";
 import { THEME } from "../theme";
 
 export const DatePickerScreen = observer(({ navigation }) => {
   const { currentDate, calendar, generateCalendar } = useMoment();
-  const { from, to } = searchState.getDates;
-  const [dates, setDates] = useState({ from, to });
+  const [dates, setDates] = useState(searchState.getDates);
+  const [renderMonth, setRenderMonth] = useState(searchState.renderListMonth);
 
   useEffect(() => {
     generateCalendar();
   }, []);
 
-  function setDateHandler(date) {
+  function setDateHandler(date, index) {
     setDates((prev) => {
       if ((prev.from && prev.to) || prev.from > date) {
         return { from: date, to: null };
@@ -28,10 +28,17 @@ export const DatePickerScreen = observer(({ navigation }) => {
       }
       return { ...prev, from: date };
     });
+
+    setRenderMonth((prev) => {
+      if (prev.length === 3) prev.shift();
+      return [...prev, index];
+    });
   }
 
   function selectDates() {
     searchState.selectDates(dates);
+    searchState.setRenderListMonth(renderMonth);
+    setData("dates", { dates, renderMonth });
     navigation.goBack();
   }
 
@@ -39,12 +46,16 @@ export const DatePickerScreen = observer(({ navigation }) => {
     <View style={{ position: "relative" }}>
       <FlatList
         data={calendar}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <CalendarMonth
+            isRender={
+              index >= Math.min(...renderMonth) &&
+              index <= Math.max(...renderMonth)
+            }
             month={item}
             dateFrom={dates.from}
             dateTo={dates.to}
-            set={setDateHandler}
+            set={(date) => setDateHandler(date, index)}
           />
         )}
         keyExtractor={(_, idx) => (idx + 1).toString()}
@@ -54,20 +65,20 @@ export const DatePickerScreen = observer(({ navigation }) => {
         <View style={{ flexDirection: "row", marginBottom: 10 }}>
           <View style={{ flexGrow: 1 }}>
             <AppText style={styles.arrow}>Заезд</AppText>
-            <AppTitle style={styles.date}>
+            <AppTextBold style={styles.date}>
               {dates.from
                 ? dates.from.format("dd, DD MMM")
                 : currentDate.format("dd, DD MMM")}
-            </AppTitle>
+            </AppTextBold>
           </View>
           <View style={{ flexGrow: 1 }}>
             <AppText style={styles.arrow}>Отьезд</AppText>
-            <AppTitle style={styles.date}>
+            <AppTextBold style={styles.date}>
               {dates.to ? dates.to.format("dd, DD MMM") : "--"}
-            </AppTitle>
+            </AppTextBold>
           </View>
         </View>
-        <AppButton title="Выбрать дату" click={selectDates} />
+        <AppButton click={selectDates}>Выбрать дату</AppButton>
       </View>
     </View>
   );

@@ -19,15 +19,6 @@ export const CustomMarker = () => {
         <Animated.View style={styles.arrowBorder}></Animated.View>
         <Animated.View style={styles.arrow}></Animated.View>
       </Animated.View>
-      {/* <Marker
-          coordinate={{
-            latitude: 50.459932679187126,
-            longitude: 30.513814145050766
-          }}
-          title="Золоті ворота"
-          description="description description description description"
-          image={require("./assets/marker.png")}
-        /> */}
     </Marker>
   );
 };
