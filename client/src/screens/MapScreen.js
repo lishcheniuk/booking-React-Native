@@ -1,170 +1,176 @@
-import React, { useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { CustomMarker } from "../components/CustomMarker";
 import { useLocation } from "../hooks/useLocation";
+import { MapScreenCard } from "../components/MapScreenCard";
 import { THEME } from "../theme";
-import { AppText } from "../components/ui/AppText";
-import { AppTextBold } from "../components/ui/AppTextBold";
 
 const CARD_WIDTH = 350;
 
-export const MapScreen = () => {
-  const [color, setColor] = useState(true);
-  const { getLocation } = useLocation();
+const markers = [
+  {
+    coordinate: {
+      latitude: 50.46126788110566,
+      longitude: 30.525431798980875
+    },
+    price: 1100,
+    rating: 8.5,
+    stars: 4
+  },
+  {
+    coordinate: {
+      latitude: 50.46282384670106,
+      longitude: 30.51493479089489
+    },
+    price: 1300,
+    rating: 9.1,
+    stars: 5
+  },
+  {
+    coordinate: {
+      latitude: 50.459175,
+      longitude: 30.510503
+    },
+    price: 920,
+    rating: 7.4,
+    stars: 3
+  },
+  {
+    coordinate: {
+      latitude: 50.45694316324058,
+      longitude: 30.517690693378363
+    },
+    price: 1500,
+    rating: 9.5,
+    stars: 5
+  },
+  {
+    coordinate: {
+      latitude: 50.45594316324058,
+      longitude: 30.516690693378363
+    },
+    price: 860,
+    rating: 7.5,
+    stars: 3
+  }
+];
 
-  function onRegionChange(region) {
-    console.log(region);
+export const MapScreen = () => {
+  const { getLocation, location } = useLocation();
+  const scrollViewRef = useRef(null);
+  const mapRef = useRef(null);
+  const mapAnimation = new Animated.Value(0);
+  let mapIndex = 0;
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  useEffect(() => {
+    mapAnimationSubscribe();
+  });
+
+  function mapAnimationSubscribe() {
+    mapAnimation.addListener(({ value }) => {
+      let index = Math.floor(value / CARD_WIDTH + 0.3);
+      if (index >= markers.length) {
+        index = markers.length - 1;
+      }
+      if (index <= 0) {
+        index = 0;
+      }
+
+      clearTimeout(regionTimeout);
+
+      const regionTimeout = setTimeout(() => {
+        if (mapIndex !== index) {
+          mapIndex = index;
+          const { coordinate } = markers[index];
+          mapRef.current.animateToRegion(
+            {
+              ...coordinate,
+              latitudeDelta: 0.04,
+              longitudeDelta: 0.04
+            },
+            350
+          );
+        }
+      }, 10);
+    });
+  }
+
+  const interpolations = markers.map((_marker, index) => {
+    const inputRange = [
+      (index - 1) * CARD_WIDTH,
+      index * CARD_WIDTH,
+      (index + 1) * CARD_WIDTH
+    ];
+
+    const scale = mapAnimation.interpolate({
+      inputRange,
+      outputRange: [1, 1.2, 1],
+      extrapolate: "clamp"
+    });
+
+    return { scale };
+  });
+
+  function markerClick(index) {
+    let x = index * CARD_WIDTH;
+    scrollViewRef.current.scrollTo({ x, animated: true });
   }
 
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         provider={PROVIDER_GOOGLE}
         style={styles.container}
-        region={{
-          latitude: 50.46109762315611,
-          longitude: 30.518888141959906,
-          latitudeDelta: 0.02,
-          longitudeDelta: 0.02
-        }}
-        onRegionChange={onRegionChange}
+        region={{ ...location, latitudeDelta: 0.04, longitudeDelta: 0.04 }}
+        onRegionChange={() => {}}
       >
-        <CustomMarker />
+        {markers.map((marker, index) => (
+          <CustomMarker
+            scale={interpolations[index].scale}
+            key={index}
+            coordinate={marker.coordinate}
+            price={marker.price}
+            click={() => markerClick(index)}
+          />
+        ))}
       </MapView>
 
-      <ScrollView
+      <Animated.ScrollView
+        ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ padding: 10 }}
-        pagingEnabled
-        snapToInterval={CARD_WIDTH - 20}
+        snapToInterval={CARD_WIDTH + 20}
         style={styles.scrollView}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  x: mapAnimation
+                }
+              }
+            }
+          ],
+          { useNativeDriver: true }
+        )}
       >
-        <View style={styles.card}>
-          <View style={styles.cardMain}>
-            <Text numberOfLines={1} style={styles.cardTitle}>
-              Козацький отель
-            </Text>
-
-            <View style={{ flexDirection: "row", marginVertical: 5 }}>
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-            </View>
-
-            <View style={{ flexDirection: "row" }}>
-              <AppText style={styles.cardRate}>8.5</AppText>
-              <AppText style={styles.cardRateText}> Замечательно</AppText>
-            </View>
-
-            <View style={{ marginTop: "auto", alignItems: "flex-end" }}>
-              <AppTextBold
-                style={{
-                  fontSize: 16,
-                  color: "#10ba35"
-                }}
-              >
-                980 UAH
-              </AppTextBold>
-
-              <AppTextBold style={{ color: THEME.GREY_COLOR }}>
-                Booking.com
-              </AppTextBold>
-            </View>
-          </View>
-          <Image
-            source={{
-              uri: "https://pix6.agoda.net/hotelImages/189/189984/189984_14100914030022645655.jpg"
-            }}
-            style={{ width: "45%", height: "100%" }}
+        {markers.map((hotel, index) => (
+          <MapScreenCard
+            key={index}
+            title="Козацький отель"
+            rate={hotel.rating}
+            price={hotel.price}
+            stars={hotel.stars}
           />
-        </View>
-
-        <View style={styles.card}>
-          <View style={styles.cardMain}>
-            <Text numberOfLines={1} style={styles.cardTitle}>
-              Козацький отель
-            </Text>
-
-            <View style={{ flexDirection: "row", marginVertical: 5 }}>
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-            </View>
-
-            <View style={{ flexDirection: "row" }}>
-              <AppText style={styles.cardRate}>8.5</AppText>
-              <AppText style={styles.cardRateText}> Замечательно</AppText>
-            </View>
-
-            <View style={{ marginTop: "auto", alignItems: "flex-end" }}>
-              <AppTextBold
-                style={{
-                  fontSize: 16,
-                  color: "#10ba35"
-                }}
-              >
-                980 UAH
-              </AppTextBold>
-
-              <AppTextBold style={{ color: THEME.GREY_COLOR }}>
-                Booking.com
-              </AppTextBold>
-            </View>
-          </View>
-          <Image
-            source={{
-              uri: "https://pix6.agoda.net/hotelImages/189/189984/189984_14100914030022645655.jpg"
-            }}
-            style={{ width: "45%", height: "100%" }}
-          />
-        </View>
-
-        <View style={styles.card}>
-          <View style={styles.cardMain}>
-            <Text numberOfLines={1} style={styles.cardTitle}>
-              Козацький отель
-            </Text>
-
-            <View style={{ flexDirection: "row", marginVertical: 5 }}>
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-              <FontAwesome name="star" size={12} color={THEME.GREY_COLOR} />
-            </View>
-
-            <View style={{ flexDirection: "row" }}>
-              <AppText style={styles.cardRate}>8.5</AppText>
-              <AppText style={styles.cardRateText}> Замечательно</AppText>
-            </View>
-
-            <View style={{ marginTop: "auto", alignItems: "flex-end" }}>
-              <AppTextBold
-                style={{
-                  fontSize: 16,
-                  color: "#10ba35"
-                }}
-              >
-                980 UAH
-              </AppTextBold>
-
-              <AppTextBold style={{ color: THEME.GREY_COLOR }}>
-                Booking.com
-              </AppTextBold>
-            </View>
-          </View>
-          <Image
-            source={{
-              uri: "https://pix6.agoda.net/hotelImages/189/189984/189984_14100914030022645655.jpg"
-            }}
-            style={{ width: "45%", height: "100%" }}
-          />
-        </View>
-      </ScrollView>
+        ))}
+      </Animated.ScrollView>
     </View>
   );
 };
@@ -179,38 +185,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingVertical: 10
-  },
-  card: {
-    flexDirection: "row",
-    height: 200,
-    width: CARD_WIDTH,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    elevation: 10,
-    overflow: "hidden",
-    marginHorizontal: 10
-  },
-  cardMain: {
-    width: "55%",
-    padding: 15
-  },
-  cardTitle: {
-    fontFamily: "roboto-bold",
-    color: THEME.BLACK_COLOR,
-    fontSize: 16
-  },
-  cardRate: {
-    color: "#fff",
-    borderRadius: 10,
-    backgroundColor: "#10ba35",
-    paddingHorizontal: 5,
-    overflow: "hidden",
-    fontSize: 14,
-    fontWeight: "bold"
-  },
-  cardRateText: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#10ba35"
   }
 });

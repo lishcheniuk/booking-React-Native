@@ -14,6 +14,8 @@ import { SelectRoomsScreen } from "../screens/SelectRoomsScreen";
 import { THEME } from "../theme";
 import { DatePickerHeader } from "./DatePickerHeader";
 import { MapHeader } from "./MapHeader";
+import { SearchTextInput } from "../components/ui/SearchTextInput";
+import { SearchScreenHeader } from "./SearchScreenHeader";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -125,7 +127,9 @@ export function AppNavigation() {
         <Stack.Screen
           name="Search"
           component={SearchScreen}
-          options={{ headerTitle: "Направление" }}
+          options={{
+            headerTitle: () => <SearchScreenHeader />
+          }}
         />
         <Stack.Screen
           name="Rooms"

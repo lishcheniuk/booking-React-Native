@@ -25,7 +25,7 @@ export const SearchView = observer(() => {
   return (
     <View style={styles.searchContainer}>
       <Text style={styles.label}>Направление</Text>
-      <SearchTextInput focus={() => toScreen("Search")} />
+      <SearchTextInput onFocus={() => toScreen("Search")} />
 
       <View style={styles.filter}>
         <TouchableOpacity
@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: THEME.GREY_COLOR,
-    fontSize: 12
+    fontSize: 12,
+    marginBottom: 5
   },
   filterValue: {
     fontSize: 16

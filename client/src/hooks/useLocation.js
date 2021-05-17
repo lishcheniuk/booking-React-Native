@@ -2,7 +2,10 @@ import { useState } from "react";
 import * as Location from "expo-location";
 
 export const useLocation = () => {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState({
+    longitude: 0,
+    latitude: 0
+  });
   const [errorMsg, setErrorMsg] = useState(null);
 
   async function getLocation() {
@@ -14,8 +17,8 @@ export const useLocation = () => {
     //let locationData = await Location.getCurrentPositionAsync();
 
     setLocation({
-      latitude: 50.442685313547294,
-      longitude: 30.627086490240988
+      latitude: 50.45936014726068,
+      longitude: 30.518023187179242
     });
   }
 
