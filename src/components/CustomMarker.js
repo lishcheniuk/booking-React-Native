@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Animated, Text, View } from "react-native";
 import { Marker } from "react-native-maps";
 import { THEME } from "../theme";
+import { AppTextBold } from "./ui/AppTextBold";
 
 export const CustomMarker = ({ coordinate, price, click, scale }) => {
   return (
@@ -15,12 +16,10 @@ export const CustomMarker = ({ coordinate, price, click, scale }) => {
           ]
         }}
       >
-        <Animated.View
-          style={[styles.bubble, { backgroundColor: THEME.GREY_COLOR }]}
-        >
-          <Text style={styles.amount}>{price}</Text>
-          <Text style={styles.dollar}>₴</Text>
-        </Animated.View>
+        <View style={styles.bubble}>
+          <AppTextBold style={styles.amount}>{price}</AppTextBold>
+          <AppTextBold style={styles.dollar}>₴</AppTextBold>
+        </View>
 
         <Animated.View style={styles.arrowBorder}></Animated.View>
       </Animated.View>
@@ -38,19 +37,17 @@ const styles = StyleSheet.create({
     fontSize: 13
   },
   bubble: {
-    paddingVertical: 2,
-    paddingHorizontal: 4,
-    borderRadius: 3,
+    borderRadius: 4,
     flexDirection: "row",
-    borderColor: THEME.GREY_COLOR, //D23F44
-    borderWidth: 0.5
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    backgroundColor: THEME.GREY_COLOR
   },
   arrowBorder: {
     backgroundColor: "transparent",
     borderColor: "transparent",
     borderWidth: 4,
     borderTopColor: THEME.GREY_COLOR, //D23F44
-    alignSelf: "center",
-    marginTop: -0.5
+    alignSelf: "center"
   }
 });

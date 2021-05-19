@@ -4,7 +4,6 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { CustomMarker } from "../components/CustomMarker";
 import { useLocation } from "../hooks/useLocation";
 import { MapScreenCard } from "../components/MapScreenCard";
-import { THEME } from "../theme";
 
 const CARD_WIDTH = 350;
 
@@ -16,7 +15,8 @@ const markers = [
     },
     price: 1100,
     rating: 8.5,
-    stars: 4
+    stars: 4,
+    isLiked: false
   },
   {
     coordinate: {
@@ -25,7 +25,8 @@ const markers = [
     },
     price: 1300,
     rating: 9.1,
-    stars: 5
+    stars: 5,
+    isLiked: true
   },
   {
     coordinate: {
@@ -34,7 +35,8 @@ const markers = [
     },
     price: 920,
     rating: 7.4,
-    stars: 3
+    stars: 3,
+    isLiked: false
   },
   {
     coordinate: {
@@ -43,7 +45,8 @@ const markers = [
     },
     price: 1500,
     rating: 9.5,
-    stars: 5
+    stars: 5,
+    isLiked: true
   },
   {
     coordinate: {
@@ -52,7 +55,8 @@ const markers = [
     },
     price: 860,
     rating: 7.5,
-    stars: 3
+    stars: 3,
+    isLiked: false
   }
 ];
 
@@ -168,6 +172,7 @@ export const MapScreen = () => {
             rate={hotel.rating}
             price={hotel.price}
             stars={hotel.stars}
+            isLiked={hotel.isLiked}
           />
         ))}
       </Animated.ScrollView>

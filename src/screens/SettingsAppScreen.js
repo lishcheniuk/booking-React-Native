@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppButton } from "../components/ui/AppButton";
 import { AppLogo } from "../components/ui/AppLogo";
 import { AppText } from "../components/ui/AppText";

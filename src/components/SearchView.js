@@ -25,7 +25,10 @@ export const SearchView = observer(() => {
   return (
     <View style={styles.searchContainer}>
       <Text style={styles.label}>Направление</Text>
-      <SearchTextInput onFocus={() => toScreen("Search")} />
+      <SearchTextInput
+        onFocus={() => toScreen("Search")}
+        value="Текущее местоположение"
+      />
 
       <View style={styles.filter}>
         <TouchableOpacity
